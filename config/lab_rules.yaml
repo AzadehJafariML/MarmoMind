@@ -1,22 +1,21 @@
 # MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
-# Everling Lab, Centre for Functional and Metabolic Mapping, University of
+# fMRI data analysis develped during Ph.D studies, Centre for Functional and Metabolic Mapping, University of
 # Western Ontario. Created May 2026.
 #
-# This is an editable file for standard data collection. Keep it LEAN — only
+# This is an editable file for standard data collection. Keep it only
 # GENERAL, cross-experiment rules (naming, the motion threshold, illustrative
 # keyword cues). Paradigm-specific reasoning does NOT live here: each run's note
-# carries a free-text experiment description, and the agent infers that paradigm's
+# carries a free-text experiment description, and MarmoMind infers that paradigm's
 # failure modes from the description's MEANING, not from an enumerated list.
 #
-# General knowledge — AROUSAL is paradigm-dependent (the agent applies this by
-# reading each run's description, NOT by keyword): auditory paradigms tolerate low
-# arousal (auditory processing persists under light sleep / anesthesia), so
+# General knowledge — AROUSAL is paradigm-dependent (MarmoMind applies this by
+# reading each run's description, NOT by keyword): auditory processing persists under sleep / anesthesia), so
 # drowsiness is usually not disqualifying for an auditory run; visual paradigms
-# require alertness with eyes open, so drowsiness/eye-closure compromises them.
+# require alertness with eyes open, so drowsiness/eye-closure compromises visual experiments.
 
 # ---- Output naming convention ----
 # ONE NIfTI per run (a run is one continuous timeseries). Conditions are
-# regressors (.1D files), modeled later in the GLM — they are NOT part of the
+# regressors (.1D files), modeled later in the GLM. They are NOT part of the
 # image name.
 naming_convention:
   # {id} is the sheet ID and already includes the leading 'm' (e.g. m15).
