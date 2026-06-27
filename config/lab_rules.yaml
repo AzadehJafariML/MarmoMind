@@ -25,22 +25,22 @@ naming_convention:
 # ---- Motion tripwire (numeric-only; NEVER a standalone stop/go verdict) ----
 # mcflirt relative RMS displacement, in mm. ONE number you can tune.
 # Ordinary motion is expected to be removed by motion-correction in later
-# preprocessing, so only OUTLIER motion is worth flagging for a human visual
-# check in FSLeyes. The agent reports the number is unusual; it never claims an
+# preprocessing steps, so only OUTLIER motion is worth flagging for a human visual
+# check in FSLeyes. MarmoMind reports the number is unusual; it never claims an
 # artifact exists.
 motion:
   relative_rms_mm: 0.2   # Flag-for-visual-check tripwire (NOT an auto-reject).
     # Anchored to Gilbert, Dureux, Jafari et al. 2023 (J Neurosci Methods 383:109737),
     # which reports this lab's restraint/coil system limits head motion to <100 µm
-    # (~0.1 mm) translation over a 15-min acquisition in awake marmosets. 0.1 mm is
+    # (~0.1 mm) translation over a 15-min acquisition in awake marmosets for auditory experiments. 0.1 mm is
     # therefore the typical CLEAN ceiling; the flag is set modestly above it (~0.2 mm)
     # to catch genuine outliers without false alarms on normal runs. NOTE: the paper's
     # figure is max translation over 15 min, whereas this metric is mcflirt relative
-    # RMS (frame-to-frame) — related but not identical, so treat 0.2 as a reasoned
+    # RMS (frame-to-frame) which is related but not identical, so treat 0.2 as a reasoned
     # STARTING value to refine against FSLeyes on real runs.
 
 # ---- Free-text cues: ILLUSTRATIVE EXAMPLES, NOT an exhaustive match list ----
-# The agent reasons about the MEANING of the experimenter's comment FIRST (e.g.
+# MarmoMind reasons about the MEANING of the experimenter's comment FIRST (e.g.
 # "the monkey conked out" => drowsy even though that phrase is not listed). These
 # examples only calibrate judgment; they are not string-matching rules.
 keywords:
