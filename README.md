@@ -19,49 +19,46 @@ happened after one whole day, sometimes too late. A run that was contaminated pa
 only reveal itself once I sat down to process the session (typically the next day), and by then the scanner time was already spent. That waste of time (and $) is what I wanted to fix.
 
 I conceived MarmoMind in May 2026, just after finishing my Ph.D. in April 2026. It pulls together
-skills I had built up separately over the years and had never combined in one
-place: a background in medical data engineering, the applied machine learning I
-worked through during my MSc and PhD, and the deep learning I applied in my most
+skills I had built up separately over the years (my B.Sc. in electronics engineering [4.5 year], my M.Sc. in data engineering [3 years], and Ph.D. in computational neuroscience [4.5 years])) and had never combined in one place: a background in engineering, the applied machine learning I
+worked through during my M.Sc. and Ph.D. where i applied different ML mothods to analyze medical (clinical/preclinical) data, and the deep learning I applied in my most
 recent publication (Imaging Neuroscience, under review), where I fine-tuned a
-pre-trained DeepLabCut model for markerless tracking — defining and comparing
+pre-trained DeepLabCut model (ResNet50) for markerless tracking by defining and comparing
 multiple landmark configurations and selecting the one that gave the most robust
 tracking for my subsequent analysis. None of those on their own solved the problem
 in front of me. Putting them together, around a problem I had actually lived, did.
 
-I want to be honest about what is and is not novel here. I am not claiming nobody
-has ever automated parts of an imaging pipeline — people have. What is mine is the
+I am not claiming nobody has ever automated parts of an imaging pipeline. What is mine is the
 origin and the approach: this grew out of a problem I faced firsthand at the
-scanner, and I designed and implemented it in my own way, with my own judgement
-about where a human must stay in the loop. The design decisions throughout are
-mine; I directed and reasoned through the architecture.
+scanner, and I designed and implemented it in my own way, with my own judgement and experience in working with live animal subjects about where a human must stay in the loop. The design decisions throughout are
+mine; I directed and reasoned through the whole architecture.
 
 ## The governing principle
 
 Log-and-convert every run first; judge quality after. Scanner time was already
 spent, so every functional run gets logged to the sheet and converted to NIfTI no
 matter how it looks. Only the quality judgement is conditional. This means a bad
-run is still recorded and still on disk in a standard form — I never silently
+run is still recorded and still on disk in a standard form and I never silently
 lose a run, I only sort it.
 
 ## What it does, per session
 
-1. Detect a ready session. It watches the DICOM folder and the regressor folder
+1. Detect a ready session. It watches the DICOM folder and the regressor folder (Condition onsets)
    and waits until both have arrived and the folders have gone quiet, so it never
-   acts on a half-transferred run.
+   acts on a half-transferred run. (in the next updated version, the MarmoMind will be able to connect the data management server and download the raw data herself (she is a female agent))
 2. Parse the raw DICOM filenames and infer run order. It collects the series
    numbers, sorts them, and assigns the smallest to the phase-reverse (`ap`) and
    the rest to `r1, r2, r3...`. The order is inferred every time, never hardcoded,
-   because the absolute series numbers change between sessions.
+   because the absolute series numbers change between sessions. This was the standard format we used in our lab for naming the raw data.
 3. Identify the monkey and look it up in the lab sheet to get its ID and its
-   per-monkey tab.
+   per-monkey tab. (in the next updated version, she will be able to be directly connected the GoogleSheet where we typically saved the information of the subjects)
 4. Work out the next session number by reading the last one already in the sheet.
-   The agent is not the only writer, so it continues the existing sequence rather
+   The MarmoMind is not the only writer, so it continues the existing sequence rather
    than counting its own runs.
 5. Read each run's note, matched by monkey ID, run number, and date, and
-   understand the free-text comment by meaning.
+   understand the free-text comment by **meaning**.
 6. Check the regressors. It compares the condition names in the note against the
    `.1D` filenames present and reports anything missing, extra, or mismatched. It
-   only ever compares filenames; it does not open a regressor file.
+   only ever compares filenames; it does not open a regressor file to see or investigate what is inside it.
 7. Convert every run with `dcm2niix` into `Raw_Nifti_Data_<DATE>/`. There is
    exactly one NIfTI per run — a run is one continuous timeseries — named
    `m{ID}_s{session}_r{run}.nii`, with the phase-reverse as `m{ID}_s{session}_ap.nii`.
