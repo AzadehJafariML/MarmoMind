@@ -21,21 +21,21 @@ The idea is mine, and it came from a problem I kept running into myself during m
 things at once. I counld not keep monitoring the animal and the experimental conditions (subject arousal, its movements or active vocalization, whether the task was actually engaging it, and ...) and at the same time pull each run off the scanner, convert it, check it, and decide whether it is clean. So the preprocessing and quality control always happened after one whole day, sometimes too late! A run that was contaminated partway through would only reveal itself once I sat down to process the session and analyze data (typically the day after experiment day), and by then the scanner time was already spent. That waste of time (and $) was what I wanted to fix.
 
 Although the idea of MarmoMind initiated in early years of my Ph.D., I conceived MarmoMind in May 2026, just after finishing my Ph.D. in April 2026. It pulls together skills I had built up separately over the years (my B.Sc. in electronics engineering [4.5 year], my M.Sc. in data engineering [3 years], and my Ph.D. in computational neuroscience [4.5 years]) and had never combined in one place: the background in engineering, the applied machine learning I
-worked through during my M.Sc. and Ph.D. where i **applied different ML mothods to analyze medical (clinical/preclinical) data**, and the deep learning I applied in my most
+worked through during my M.Sc. and Ph.D. where I applied **different ML mothods** to analyze medical (clinical/preclinical) data, and the **deep learning** I applied in my most
 recent publication (*Imaging Neuroscience*, under review), where I **fine-tuned** a
-pre-trained DeepLabCut model (ResNet50) for markerless tracking by defining and comparing
-multiple landmark configurations and selecting the one that gave the most robust
+pre-trained DeepLabCut model (ResNet50) for pose estimation and facial landmark detection in over 100 in-scanner-recorded videos for an auditory task by **defining and comparing
+multiple landmark configurations** and selecting the one that gave the most robust
 tracking for my subsequent analysis. None of those on their own solved the problem
 in front of me. Putting them together, around a problem I had actually lived, did.
 
-I am not claiming nobody has ever automated parts of an imaging pipeline. What is mine is the
+I am not claiming nobody has ever automated parts of an data analysis pipeline. What is mine is the
 origin and the approach: this grew out of a problem I faced firsthand at the
-lab, and I designed and implemented it in my own way, with my own experience in working with live animal subjects and  my own judgement about where a human must stay in the loop. The design decisions throughout are mine; I directed and reasoned through the whole architecture.
+lab, and I designed and implemented it in my own way, with my own experience in working with live animal subjects and my own judgement about where a human must stay in the loop. The design decisions throughout are mine; I directed and reasoned through the whole architecture.
 
 ## The governing principle
 
 Log and convert every run first; judge quality after. Scanner time was already
-spent, so every functional run gets logged to the sheet and converted to NIfTI no
+spent, so every functional run gets logged to the summary sheet and converted to NIfTI no
 matter how it looks. Only the quality judgement is conditional. This means a bad
 run is still recorded and still on disk in a standard form and I never silently
 lose a run, I only sort it.
@@ -44,13 +44,13 @@ lose a run, I only sort it.
 
 1. Detect a ready session. It watches the DICOM folder and the regressor folder (Condition onsets)
    and waits until both have arrived and the folders have gone quiet, so it never
-   acts on a half-transferred run. (in the next updated version, the MarmoMind will be able to connect the data management server and download the raw data herself (she is a female agent))
+   acts on a half-transferred run. (in the next versions, the MarmoMind will be able to connect the data management server and download the raw data herself (she is a female agent!))
 2. Parse the raw DICOM filenames and infer run order. It collects the series
    numbers, sorts them, and assigns the smallest to the phase-reverse (`ap`) and
    the rest to `r1, r2, r3...`. The order is inferred every time, never hardcoded,
-   because the absolute series numbers change between sessions. This was the standard format we used in our lab for naming the raw data.
+   because the absolute series numbers change between sessions. This was the standard format I used for naming the raw data.
 3. Identify the monkey and look it up in the lab sheet to get its ID and its
-   per-monkey tab. (in the next updated version, she will be able to be directly connected the GoogleSheet where we typically saved the information of the subjects)
+   per-monkey tab. (in the next versions, MarmoMind will be able to be directly connected the GoogleSheet where we typically saved the information of the subjects)
 4. Work out the next session number by reading the last one already in the sheet.
    The MarmoMind is not the only writer, so it continues the existing sequence rather
    than counting its own runs.
@@ -80,7 +80,7 @@ Almost all of MarmoMind is plain, deterministic Python. The folder watching, fil
 check, the file moves, and the approval gates are ordinary code that does the
 same thing every time.
 
-**The place I use a language model** in this version (V1 so far) is the quality judgement itself. That is the step that genuinely needs to read a sentence like "the code failed at volume 200"
+**The place I use a language model** in this version (V1 so far; June 2026) is the quality judgement itself. That is the step that genuinely needs to read a sentence like "the code failed at volume 200"
 and understand that it means the run is broken, not merely noisy. The judge reasons
 over the note's comment and experiment description together with the numeric
 outputs it is handed (the regressor check, the volume cross-check, the motion
