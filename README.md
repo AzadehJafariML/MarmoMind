@@ -1,4 +1,4 @@
-MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
+MarmoMind: AI Agent designed and built by Azadeh Jafari (jfr.azadeh@gmail.com) for the
 Everling Lab, Centre for Functional and Metabolic Mapping, University of
 Western Ontario. Created May 2026.
 
@@ -6,24 +6,19 @@ Western Ontario. Created May 2026.
 
 MarmoMind is a human-in-the-loop processing agent for awake, head-fixed marmoset
 fMRI. I built it to sit beside the scanner and do the work I cannot do alone in
-real time: log every run, convert it, and reason about whether the data is worth
-analysing — while I keep my attention on the animal. It recommends and sorts. I
-decide. It never pools data into a final analysis on its own, and it never claims
-to read or interpret a brain image. It reasons only over the text of my run notes
-and the numeric outputs of its tools.
+real time: log every run, convert the raw data (DICOM) to Nifti, and reason about whether the data is worth analyzing, while I keep my attention on the animal and experiment in the lab!
+It recommends and sorts. I decide whenever is needed. It never pools data into a final analysis on its own, and it never claims to read or interpret a brain image. It reasons only over the text of my (experimenter) notes and the numeric outputs of its tools.
 
 ## Why I built this
 
-The idea is mine, and it came from a problem I kept running into myself. When I am
-alone in the scanner suite with an awake marmoset, I cannot do two demanding
-things at once. I cannot keep watching the animal — its arousal, its movement,
-whether the task is actually engaging it — and at the same time pull each run off
-the scanner, convert it, check it, and decide whether it is clean. So the triage
-happened later, often too late. A run that was contaminated partway through would
-only reveal itself once I sat down to process the session, and by then the scanner
-time was already spent. That waste is what I wanted to fix.
+The idea is mine, and it came from a problem I kept running into myself during my Ph.D. studies at Centre for Functional and Metabolic Mappint, University of Western Ontario, London, Canada. When I was
+alone in the scanner suite with an awake marmoset inside the scanner, I cannot do two demanding
+things at once. I cannot keep monitoring the animal and the experimental conditions (its arousal, its movement, whether the task is actually engaging it and ...) and at the same time pull each run off
+the scanner, convert it, check it, and decide whether it is clean. So the preprocessing always
+happened after one whole day, sometimes too late. A run that was contaminated partway through would
+only reveal itself once I sat down to process the session (typically the next day), and by then the scanner time was already spent. That waste of time (and $) is what I wanted to fix.
 
-I conceived MarmoMind in May 2026, just after finishing my PhD. It pulls together
+I conceived MarmoMind in May 2026, just after finishing my Ph.D. in April 2026. It pulls together
 skills I had built up separately over the years and had never combined in one
 place: a background in medical data engineering, the applied machine learning I
 worked through during my MSc and PhD, and the deep learning I applied in my most
