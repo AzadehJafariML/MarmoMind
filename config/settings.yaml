@@ -1,6 +1,6 @@
-# MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
-# Everling Lab, Centre for Functional and Metabolic Mapping, University of
-# Western Ontario. Created May 2026.
+# MarmoMind: MarmoMind : Agentic AI designed and built by Azadeh Jafari (jfr.azadeh@gmail.com).
+# Created May 2026. Developed during my PhD research in computational neuroscience.
+# See README for the published protocol this work builds on.
 #
 # Runtime settings (paths & knobs only; no rules here). Real scanner/lab paths
 # swap in here later with NO code change.
@@ -9,7 +9,7 @@
 paths:
   incoming_dicom:       "data/incoming_dicom"        # watched folder A (raw .dcm)
   incoming_regressors:  "data/incoming_regressors"   # watched folder B (.1D readiness signal)
-  notes:                "data/notes"                 # per-run YAML notes (hand-written)
+  notes:                "data/notes"                 # per-run YAML notes (hand-written by the experimenter)
   output_root:          "data"                       # Raw_Nifti_Data_<DATE>/ is created here
   # The agent creates: <output_root>/Raw_Nifti_Data_<DATE>/  and  .../review/
 
