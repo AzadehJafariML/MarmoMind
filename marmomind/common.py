@@ -1,6 +1,6 @@
-# MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
-# Everling Lab, Centre for Functional and Metabolic Mapping, University of
-# Western Ontario. Created May 2026.
+# MarmoMind : An Agentic AI designed and built by Azadeh Jafari (jfr.azadeh@gmail.com).
+# Created May 2026. Developed during my Ph.D. research in computational neuroscience.
+# See README for the published protocol this work builds on.
 #
 # Shared helpers: portable path resolution, config loading, tool return shaping.
 # Not agent logic — pure infrastructure used by the deterministic tools.
