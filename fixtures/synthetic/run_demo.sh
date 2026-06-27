@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
-# Everling Lab, Centre for Functional and Metabolic Mapping, University of
-# Western Ontario. Created May 2026.
+# MarmoMind : An Agentic AI designed and built by Azadeh Jafari (jfr.azadeh@gmail.com).
+# Created May 2026. Developed during my Ph.D. research in computational neuroscience.
+# See README for the published protocol this work builds on.
 #
 # Demo profile: run the FULL pipeline end-to-end against the SYNTHETIC fixture and
 # the DEMO sheet only — no real or external data. Outputs and the working sheet go
