@@ -1,10 +1,17 @@
-MarmoMind: AI Agent designed and built by Azadeh Jafari (jfr.azadeh@gmail.com) regarding the processing pipeline performed in the Everling Lab, Centre for Functional and Metabolic Mapping, University of
-Western Ontario. Created May 2026.
+**MarmoMind** is an **agentic AI** that automates the data-handling and quality-triage stage that precedes the awake-marmoset fMRI preprocessing pipeline used in our research group, published as:
+
+   Zanini A, Dureux A, **Jafari A**, Gilbert KM, Zeman P, Bellyou M, Li A,
+   Vander Tuin C, Everling S (2023). *In vivo functional brain mapping using
+   ultra-high-field fMRI in awake common marmosets.* STAR Protocols 4(4):102586.
+
+   Version 1 of this agent handles detection, conversion, naming, logging, and quality triage, 
+   the stage that feeds that pipeline. Future versions will implement the
+   preprocessing and analysis steps described in the protocol directly.
 
 # MarmoMind
 
-MarmoMind is a human-in-the-loop processing agent for awake, head-fixed marmoset
-fMRI. I built it to sit beside the scanner and do the work I cannot do alone in
+MarmoMind is a **human-in-the-loop** processing agent for awake, head-fixed marmoset
+fMRI. I built it to sit in the preparation room and do the work I cannot do alone in
 real time: log every run, convert the raw data (DICOM) to Nifti, and reason about whether the data is worth analyzing, while I keep my attention on the animal and experiment in the lab!
 It recommends and sorts. I decide whenever is needed. It never pools data into a final analysis on its own, and it never claims to read or interpret a brain image. It reasons only over the text of my (experimenter) notes and the numeric outputs of its tools.
 
