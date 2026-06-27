@@ -1,0 +1,232 @@
+MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
+Everling Lab, Centre for Functional and Metabolic Mapping, University of
+Western Ontario. Created May 2026.
+
+# MarmoMind
+
+MarmoMind is a human-in-the-loop processing agent for awake, head-fixed marmoset
+fMRI. I built it to sit beside the scanner and do the work I cannot do alone in
+real time: log every run, convert it, and reason about whether the data is worth
+analysing — while I keep my attention on the animal. It recommends and sorts. I
+decide. It never pools data into a final analysis on its own, and it never claims
+to read or interpret a brain image. It reasons only over the text of my run notes
+and the numeric outputs of its tools.
+
+## Why I built this
+
+The idea is mine, and it came from a problem I kept running into myself. When I am
+alone in the scanner suite with an awake marmoset, I cannot do two demanding
+things at once. I cannot keep watching the animal — its arousal, its movement,
+whether the task is actually engaging it — and at the same time pull each run off
+the scanner, convert it, check it, and decide whether it is clean. So the triage
+happened later, often too late. A run that was contaminated partway through would
+only reveal itself once I sat down to process the session, and by then the scanner
+time was already spent. That waste is what I wanted to fix.
+
+I conceived MarmoMind in May 2026, just after finishing my PhD. It pulls together
+skills I had built up separately over the years and had never combined in one
+place: a background in medical data engineering, the applied machine learning I
+worked through during my MSc and PhD, and the deep learning I applied in my most
+recent publication (Imaging Neuroscience, under review), where I fine-tuned a
+pre-trained DeepLabCut model for markerless tracking — defining and comparing
+multiple landmark configurations and selecting the one that gave the most robust
+tracking for my subsequent analysis. None of those on their own solved the problem
+in front of me. Putting them together, around a problem I had actually lived, did.
+
+I want to be honest about what is and is not novel here. I am not claiming nobody
+has ever automated parts of an imaging pipeline — people have. What is mine is the
+origin and the approach: this grew out of a problem I faced firsthand at the
+scanner, and I designed and implemented it in my own way, with my own judgement
+about where a human must stay in the loop. The design decisions throughout are
+mine; I directed and reasoned through the architecture.
+
+## The governing principle
+
+Log-and-convert every run first; judge quality after. Scanner time was already
+spent, so every functional run gets logged to the sheet and converted to NIfTI no
+matter how it looks. Only the quality judgement is conditional. This means a bad
+run is still recorded and still on disk in a standard form — I never silently
+lose a run, I only sort it.
+
+## What it does, per session
+
+1. Detect a ready session. It watches the DICOM folder and the regressor folder
+   and waits until both have arrived and the folders have gone quiet, so it never
+   acts on a half-transferred run.
+2. Parse the raw DICOM filenames and infer run order. It collects the series
+   numbers, sorts them, and assigns the smallest to the phase-reverse (`ap`) and
+   the rest to `r1, r2, r3...`. The order is inferred every time, never hardcoded,
+   because the absolute series numbers change between sessions.
+3. Identify the monkey and look it up in the lab sheet to get its ID and its
+   per-monkey tab.
+4. Work out the next session number by reading the last one already in the sheet.
+   The agent is not the only writer, so it continues the existing sequence rather
+   than counting its own runs.
+5. Read each run's note, matched by monkey ID, run number, and date, and
+   understand the free-text comment by meaning.
+6. Check the regressors. It compares the condition names in the note against the
+   `.1D` filenames present and reports anything missing, extra, or mismatched. It
+   only ever compares filenames; it does not open a regressor file.
+7. Convert every run with `dcm2niix` into `Raw_Nifti_Data_<DATE>/`. There is
+   exactly one NIfTI per run — a run is one continuous timeseries — named
+   `m{ID}_s{session}_r{run}.nii`, with the phase-reverse as `m{ID}_s{session}_ap.nii`.
+8. Cross-check volumes. It reads the true volume count from the converted NIfTI
+   and compares it to the count in the note. If they disagree it logs the real
+   number and raises a warning, because the gap might be a typo or it might be a
+   truncated run whose regressors no longer line up with the data.
+9. Log one row per functional run to the sheet, using the real volume count.
+10. Run a lightweight motion tripwire (`mcflirt` relative RMS displacement). This
+    is numbers only. If the value is unusually high it adds a "recommend a visual
+    check in FSLeyes" flag. It is never a standalone verdict and it never asserts
+    that an artefact exists.
+11. Judge each functional run and sort it: clean goes to the main folder,
+    valid-but-compromised goes to a separate `review/` folder, broken stays filed
+    but flagged skip-analysis, and a genuinely unclear case is flagged and
+    deferred to me rather than guessed.
+
+## How it is built
+
+Almost all of MarmoMind is plain, deterministic Python. The orchestration — the
+folder watching, filename parsing, sheet reads and writes, conversion, the motion
+check, the file moves, and the approval gates — is ordinary code that does the
+same thing every time. I made that choice deliberately, because the parts that
+must not drift are exactly these mechanical, irreversible steps.
+
+The one place I use a language model is the quality judgement itself. That is the
+step that genuinely needs to read a sentence like "the code failed at volume 200"
+and understand that it means the run is broken, not merely noisy. The judge reasons
+over the note's comment and experiment description together with the numeric
+outputs it is handed (the regressor check, the volume cross-check, the motion
+number) and returns one of clean, compromised, broken, or ambiguous, with a written
+reason. It runs through Anthropic's Agent SDK (`claude-agent-sdk`). If the model is
+unreachable it falls back to a transparent rule and says so, so the pipeline never
+breaks.
+
+It runs in two modes, and only the gate behaviour differs:
+
+- review mode stops and waits for my yes or no before every mutating step —
+  conversion, sheet write, and file moves. This is for close supervision.
+- auto mode does the whole job across every ready run without pausing, then hands
+  me a single report at the end listing everything it did and every flag it
+  raised. I stay in the loop through that report and the `review/` folder, not
+  through per-step clicks.
+
+A note on flags versus blockers, because the distinction matters. A flag — a
+compromised sort, a volume mismatch, elevated motion, a regressor issue, a broken
+run — never halts the pipeline. The run is still logged, converted, and filed, and
+the flag is recorded for me. Only genuinely irreversible actions are gated by
+approval, and only in review mode.
+
+## Backlog, not real-time
+
+In practice I do not upload after every session. I might upload every two or three.
+So MarmoMind is built to process whatever has accumulated: it handles a backlog of
+several sessions in one run, oldest first, telling them apart by acquisition date.
+
+## What it will not do
+
+These are the boundaries I designed in on purpose, and they hold in both modes:
+
+- It recommends; it does not reject. It sorts runs and explains itself, but it
+  never throws data away and never decides the final analysis set. That is mine.
+- It never pools runs into an analysis on its own.
+- It reasons over text and numbers, never images. It has no tool that hands it a
+  brain image, so it cannot pretend to have looked at one. The motion check gives
+  it a number to reason about, not a picture.
+- When it is genuinely unsure, it says so and defers, rather than inventing an
+  answer to look decisive.
+
+## Two knowledge sources, kept separate
+
+- The judge's reasoning principles live in its own instructions
+  (`marmomind/judge.py`) and in the agent's identity (`marmomind/system_prompt.py`).
+- The editable lab knowledge lives in `config/lab_rules.yaml`: the naming
+  convention, the motion threshold, a few illustrative keyword cues (clearly
+  marked as calibration, not matching rules), and a general fact about arousal
+  being paradigm-dependent. The judge reasons from the meaning of my notes first;
+  the lab rules only calibrate it.
+
+## Setup and running it
+
+```bash
+pip install -r requirements.txt
+
+# Authentication for the one model step. The tested setup uses my Claude
+# subscription through the CLI, so that is the primary path:
+claude login                               # primary: sign in with the Claude CLI
+
+# Alternative, if you would rather use an API key than the subscription:
+# export ANTHROPIC_API_KEY="sk-ant-..."
+```
+
+The external binaries are called by full path from `config/settings.yaml`:
+`dcm2niix` (which ships inside FSL) and `mcflirt` (FSL). Version 1 logs to a local
+copy of the lab sheet; a live Google Sheet swaps in later behind the same tool
+interface.
+
+To run against real data:
+
+```bash
+python -m marmomind.agent --mode review    # stop-and-wait (default)
+python -m marmomind.agent --mode auto      # do-all-then-report
+python -m marmomind.agent --paths          # show the resolved data paths
+```
+
+To try it end-to-end on entirely synthetic data, with fake monkeys and a demo
+sheet and nothing real involved:
+
+```bash
+bash fixtures/synthetic/run_demo.sh        # runs the full pipeline in auto mode
+```
+
+## Honest limitations
+
+I would rather state these plainly than let them surprise anyone.
+
+- Motion values need calibration. The `mcflirt` relative-RMS numbers I am getting,
+  on both real and synthetic data, come out far higher than is physically
+  plausible for a head-fixed marmoset. The threshold (0.2 mm) is a reasoned
+  starting point, anchored to a published figure for this lab's restraint system,
+  but the metric and that figure are not the same measurement. Before I trust the
+  motion flag in production I need to look at the runs in FSLeyes and check how
+  mcflirt is being invoked. Today the motion flag fires on essentially every run,
+  which is why it only ever recommends a visual check and never decides anything.
+- The arousal knowledge lives in two places. The human-readable version is in the
+  `lab_rules.yaml` header; the version the model actually reads is in the judge's
+  instructions. The keyword lists in `lab_rules.yaml` currently only feed the
+  offline fallback, not the model. So the editable lab file is not yet the single
+  source the judge consumes. Reconciling that is a clear next cleanup.
+- The judgement step is a language model, so on genuinely borderline runs it is
+  not perfectly reproducible. It tends to surface those as ambiguous rather than
+  flip-flop silently, but I want to be upfront that it is not deterministic.
+- Version 1 is functional runs only (no anatomical handling), one subject per run
+  (it does handle a multi-session backlog), and a local spreadsheet rather than a
+  live one.
+
+## Built to grow in phases
+
+I designed MarmoMind to be released and upgraded step by step, not as a finished
+product. Version 1 is the foundation: getting the data handled correctly and the
+quality judgement trustworthy and honest. The later phases build on top of that:
+
+- the analysis and GLM pipeline, so it does not stop at triage;
+- group-level analysis across sessions and animals;
+- a live Google Sheet instead of a local copy;
+- judgement grounded in the literature, not only in my lab rules;
+- automated generation of the run notes themselves;
+- and direct ingestion from our lab's data-management system, so I do not stage
+  files by hand.
+
+## Status
+
+Version 1 is built and has run a full real session end to end — detect, log,
+convert, volume-check, regressor-check, motion-check, judge, and sort — as well as
+a fully synthetic demo. The deterministic logic is tested. The main thing I want
+to settle before relying on a production run is the motion calibration above.
+
+## A note on data and distribution
+
+No real animal data, no real lab sheet, and no credentials live in this
+repository. The public demo is entirely synthetic. The real data stays on my own
+disk, outside anything that would be committed. I will not publish this repository
+to GitHub or any remote until I decide to.

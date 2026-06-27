@@ -1,0 +1,50 @@
+# MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
+# Everling Lab, Centre for Functional and Metabolic Mapping, University of
+# Western Ontario. Created May 2026.
+#
+# Runtime settings (paths & knobs only; no rules here). Real scanner/lab paths
+# swap in here later with NO code change.
+
+# ---- Watched + working folders (v1 practice folders inside the project) ----
+paths:
+  incoming_dicom:       "data/incoming_dicom"        # watched folder A (raw .dcm)
+  incoming_regressors:  "data/incoming_regressors"   # watched folder B (.1D readiness signal)
+  notes:                "data/notes"                 # per-run YAML notes (hand-written)
+  output_root:          "data"                       # Raw_Nifti_Data_<DATE>/ is created here
+  # The agent creates: <output_root>/Raw_Nifti_Data_<DATE>/  and  .../review/
+
+# ---- Regressor layout (the real lab convention) ----
+# One subfolder per SESSION named m{ID}_{YYYYMMDD}, holding files named
+# {Condition}_r{N}.1D — e.g. data/incoming_regressors/m15_20231025/Chatter_r1.1D.
+# The sanity-check tool resolves this folder from the monkey ID + date (tolerant
+# of case/separators) and matches a run's files by their _r{N} suffix. A flat
+# layout (.1D directly in incoming_regressors) is also accepted as a fallback.
+regressors:
+  session_subfolder: "m{id}_{YYYYMMDD}"   # informational; resolution is automatic
+
+# ---- External binaries (call by FULL PATH; do NOT install new copies) ----
+binaries:
+  dcm2niix: "/usr/local/fsl/fslpython/pkgs/dcm2niix-1.0.20211006-h940c156_0/bin/dcm2niix"
+  mcflirt:  "/usr/local/fsl/bin/mcflirt"
+
+# ---- Detection / readiness ----
+detection:
+  poll_interval_seconds: 10        # how often to scan the two folders
+  quiescence_seconds:    30        # ready only after file count is stable this long
+                                   # AND series present in DICOM + regressors arrived
+
+# ---- Sheet backend (v1 = local xlsx; switch to live Google Sheet later) ----
+sheet:
+  backend: "xlsx"                  # "xlsx" (v1) | "gsheet" (later, same tool interface)
+  xlsx_path: "Example_Of-GoogleSheet.xlsx"   # override per-run with env MARMOMIND_XLSX
+  summary_tab: "Summary"
+  gsheet_id: ""
+  service_account_json: "secrets/service_account.json"
+
+# ---- Judgment (the ONLY LLM step) ----
+judge:
+  model: "sonnet"                  # model for the meaning-based per-run quality sort
+
+# ---- Logging ----
+logging:
+  audit_dir: "logs"                # append-only JSONL audit of every action + verdict

@@ -1,0 +1,11 @@
+# MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
+# Everling Lab, Centre for Functional and Metabolic Mapping, University of
+# Western Ontario. Created May 2026.
+claude-agent-sdk>=0.2.110
+pyyaml>=6.0
+openpyxl>=3.1          # v1 local xlsx sheet backend
+gspread>=6.0           # later: live Google Sheet (same tool interface)
+google-auth>=2.0       # later: service-account auth for gspread
+# Fixture generation ONLY (not needed to run the pipeline): pydicom>=3.0, numpy>=1.23
+#   -> regenerates fixtures/synthetic via fixtures/synthetic/make_fixture.py
+# External binaries (NOT pip): dcm2niix (inside FSL) + mcflirt (FSL) — see config/settings.yaml

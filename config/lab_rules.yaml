@@ -1,0 +1,61 @@
+# MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
+# Everling Lab, Centre for Functional and Metabolic Mapping, University of
+# Western Ontario. Created May 2026.
+#
+# This is an editable file for standard data collection. Keep it LEAN — only
+# GENERAL, cross-experiment rules (naming, the motion threshold, illustrative
+# keyword cues). Paradigm-specific reasoning does NOT live here: each run's note
+# carries a free-text experiment description, and the agent infers that paradigm's
+# failure modes from the description's MEANING, not from an enumerated list.
+#
+# General knowledge — AROUSAL is paradigm-dependent (the agent applies this by
+# reading each run's description, NOT by keyword): auditory paradigms tolerate low
+# arousal (auditory processing persists under light sleep / anesthesia), so
+# drowsiness is usually not disqualifying for an auditory run; visual paradigms
+# require alertness with eyes open, so drowsiness/eye-closure compromises them.
+
+# ---- Output naming convention ----
+# ONE NIfTI per run (a run is one continuous timeseries). Conditions are
+# regressors (.1D files), modeled later in the GLM — they are NOT part of the
+# image name.
+naming_convention:
+  # {id} is the sheet ID and already includes the leading 'm' (e.g. m15).
+  functional:     "{id}_s{session}_r{run}.nii"   # e.g. m15_s108_r1.nii
+  phase_reverse:  "{id}_s{session}_ap.nii"       # e.g. m15_s108_ap.nii (one per session, shared)
+
+# ---- Motion tripwire (numeric-only; NEVER a standalone stop/go verdict) ----
+# mcflirt relative RMS displacement, in mm. ONE number you can tune.
+# Ordinary motion is expected to be removed by motion-correction in later
+# preprocessing, so only OUTLIER motion is worth flagging for a human visual
+# check in FSLeyes. The agent reports the number is unusual; it never claims an
+# artifact exists.
+motion:
+  relative_rms_mm: 0.2   # Flag-for-visual-check tripwire (NOT an auto-reject).
+    # Anchored to Gilbert, Dureux, Jafari et al. 2023 (J Neurosci Methods 383:109737),
+    # which reports this lab's restraint/coil system limits head motion to <100 µm
+    # (~0.1 mm) translation over a 15-min acquisition in awake marmosets. 0.1 mm is
+    # therefore the typical CLEAN ceiling; the flag is set modestly above it (~0.2 mm)
+    # to catch genuine outliers without false alarms on normal runs. NOTE: the paper's
+    # figure is max translation over 15 min, whereas this metric is mcflirt relative
+    # RMS (frame-to-frame) — related but not identical, so treat 0.2 as a reasoned
+    # STARTING value to refine against FSLeyes on real runs.
+
+# ---- Free-text cues: ILLUSTRATIVE EXAMPLES, NOT an exhaustive match list ----
+# The agent reasons about the MEANING of the experimenter's comment FIRST (e.g.
+# "the monkey conked out" => drowsy even though that phrase is not listed). These
+# examples only calibrate judgment; they are not string-matching rules.
+keywords:
+  # A FEW generic, paradigm-NEUTRAL examples ONLY — to calibrate judgment, never
+  # to match. The agent reasons from the comment's meaning; anything paradigm-
+  # specific (a stimulus/equipment failure for THIS run's paradigm) is inferred
+  # from the experiment description, not listed here.
+  broken:       # suggests SKIP analysis (run still logged + converted)
+    - "false start"
+    - "scanner stopped mid-run"
+    - "aborted"
+    - "code failed"
+    - "stimuli were not presented"
+    - "scanner start and code start were not synchronized"
+    - "wrong paradigm"
+  compromised:  # suggests valid-but-compromised -> review folder
+    - "partial data"

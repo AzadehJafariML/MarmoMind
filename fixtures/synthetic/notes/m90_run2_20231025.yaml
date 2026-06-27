@@ -1,0 +1,22 @@
+# MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
+# Everling Lab, Centre for Functional and Metabolic Mapping, University of
+# Western Ontario. Created May 2026.
+
+monkey:     Pixel
+run:        2
+experiment: Auditory
+description: >
+  Auditory run; only auditory stimuli are presented in a pseudorandom
+  order while the marmoset rests quietly.
+conditions:
+  - Vocal
+  - Nonvocal
+state:      awake
+time_in:    "11:00:00"
+time_out:   "11:12:00"
+task:       "vocalization"
+comments:   "the stimulus code crashed around volume 3; run did not complete as designed"
+volumes:    6
+coil:       "8channel coil"
+tr:         "1,5"
+resolution: "1.0 mm iso"

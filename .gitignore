@@ -1,0 +1,45 @@
+# MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
+# Everling Lab, Centre for Functional and Metabolic Mapping, University of
+# Western Ontario. First released May 2026.
+
+# secrets — ignore contents, but keep the empty folder (marks where the v2
+# service-account key goes)
+secrets/*
+!secrets/.gitkeep
+*.json
+!config/*.json
+
+# REAL lab data + internal docs — NEVER published (the synthetic fixture + README
+# are the public demo/story)
+/Example_Of-GoogleSheet.xlsx
+*.backup-*.xlsx
+AgenticAI-BiomedicalResearch.docx
+data/notes/*
+!data/notes/_TEMPLATE_*
+
+# converted data & outputs
+data/Raw_Nifti_Data_*/
+*.nii
+*.nii.gz
+data/incoming_dicom/*
+data/incoming_regressors/*
+!**/.gitkeep
+
+# fixtures are intentionally tracked (publishable) — do not ignore them
+!fixtures/**
+
+# local editor / agent config + OS noise
+.claude/
+.DS_Store
+
+# logs
+logs/*.jsonl
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# office temp lock files
+~$*

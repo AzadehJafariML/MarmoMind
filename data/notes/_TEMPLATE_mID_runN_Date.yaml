@@ -1,0 +1,47 @@
+# MarmoMind: AI Agent designed by Azadeh Jafari (jfr.azadeh@gmail.com) for the
+# Everling Lab, Centre for Functional and Metabolic Mapping, University of
+# Western Ontario. Created May 2026.
+#
+# Per-run NOTE — hand-written by the experimenter, ONE file per FUNCTIONAL run,
+# for ANY kind of experiment. You fill in the VALUES only; you never need to edit
+# the comments. Any field may be left BLANK — the agent records an empty cell and
+# continues, never stops.
+#
+# Filename carries three identifiers so notes never collide across sessions:
+#     m{ID}_run{N}_{YYYYMMDD}.yaml      (the date is ALWAYS YYYYMMDD)
+#   - ID   : the monkey's ID from the Summary tab
+#   - run  : the run number
+#   - date : the session/scan date as YYYYMMDD
+# Matching is TOLERANT of harmless formatting noise — case, interchangeable
+# separators, and spaces anywhere (even within a token, e.g. "m 15" = m15,
+# "run 2" = run2). The date must be a valid YYYYMMDD; if it is not, the agent
+# flags it and never guesses.
+# Do NOT make a note for the phase-reverse (ap): it is not logged or judged.
+
+monkey:                    # the animal's name (for your readability; matching uses the filename)
+run:                       # the run number
+experiment:                # optional short tag for the kind of run, in your own words
+
+# --- Experiment description: FREE TEXT, in your own words ---
+# Describe the paradigm and its INTENT however you like — there is no required
+# wording. The agent understands it by meaning and works out the consequences
+# itself: if your paradigm depends on something holding (the subject cooperating,
+# the stimuli presenting correctly, a device working, ...) and a comment later
+# says that thing failed, the agent infers the impact and flags the run.
+# Differently worded descriptions of the same paradigm are treated the same. If a
+# description is vague, missing, or self-contradictory, the agent flags it and
+# defers — it never invents a paradigm to judge against.
+description:
+
+conditions:                # the condition name(s) for this run, in order; also
+  -                        # compared against the .1D regressor filenames
+
+state:                     # the animal's state during the run
+time_in:                   # time the animal went in
+time_out:                  # time the animal came out
+task:                      # the task / what the subject was doing
+comments:                  # free text: anything notable about this run
+volumes:                   # number of volumes acquired
+coil:                      # the coil used
+tr:                        # the repetition time, exactly as written
+resolution:                # the acquisition resolution
