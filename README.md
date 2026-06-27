@@ -1,5 +1,4 @@
-MarmoMind: AI Agent designed and built by Azadeh Jafari (jfr.azadeh@gmail.com) for the
-Everling Lab, Centre for Functional and Metabolic Mapping, University of
+MarmoMind: AI Agent designed and built by Azadeh Jafari (jfr.azadeh@gmail.com) regarding the processing pipeline performed in the Everling Lab, Centre for Functional and Metabolic Mapping, University of
 Western Ontario. Created May 2026.
 
 # MarmoMind
@@ -9,17 +8,12 @@ fMRI. I built it to sit beside the scanner and do the work I cannot do alone in
 real time: log every run, convert the raw data (DICOM) to Nifti, and reason about whether the data is worth analyzing, while I keep my attention on the animal and experiment in the lab!
 It recommends and sorts. I decide whenever is needed. It never pools data into a final analysis on its own, and it never claims to read or interpret a brain image. It reasons only over the text of my (experimenter) notes and the numeric outputs of its tools.
 
-## Why I built this
+## The Idea of building MarmoMind comes from:
 
-The idea is mine, and it came from a problem I kept running into myself during my Ph.D. studies at Centre for Functional and Metabolic Mappint, University of Western Ontario, London, Canada. When I was
-alone in the scanner suite with an awake marmoset inside the scanner, I cannot do two demanding
-things at once. I cannot keep monitoring the animal and the experimental conditions (its arousal, its movement, whether the task is actually engaging it and ...) and at the same time pull each run off
-the scanner, convert it, check it, and decide whether it is clean. So the preprocessing always
-happened after one whole day, sometimes too late. A run that was contaminated partway through would
-only reveal itself once I sat down to process the session (typically the next day), and by then the scanner time was already spent. That waste of time (and $) is what I wanted to fix.
+The idea is mine, and it came from a problem I kept running into myself during my Ph.D. studies at the Centre for Functional and Metabolic Mapping (CFMM), University of Western Ontario, London, Canada. When I was alone in the scanner suite with an awake marmoset inside the scanner, I could not do two demanding
+things at once. I counld not keep monitoring the animal and the experimental conditions (subject arousal, its movements or active vocalization, whether the task was actually engaging it, and ...) and at the same time pull each run off the scanner, convert it, check it, and decide whether it is clean. So the preprocessing and quality control always happened after one whole day, sometimes too late! A run that was contaminated partway through would only reveal itself once I sat down to process the session and analyze data (typically the day after experiment day), and by then the scanner time was already spent. That waste of time (and $) was what I wanted to fix.
 
-Although the idea of MarmoMind initiated in late 2025, I conceived MarmoMind in May 2026, just after finishing my Ph.D. in April 2026. It pulls together
-skills I had built up separately over the years (my B.Sc. in electronics engineering [4.5 year], my M.Sc. in data engineering [3 years], and Ph.D. in computational neuroscience [4.5 years])) and had never combined in one place: a background in engineering, the applied machine learning I
+Although the idea of MarmoMind initiated in early years of my Ph.D., I conceived MarmoMind in May 2026, just after finishing my Ph.D. in April 2026. It pulls together skills I had built up separately over the years (my B.Sc. in electronics engineering [4.5 year], my M.Sc. in data engineering [3 years], and my Ph.D. in computational neuroscience [4.5 years]) and had never combined in one place: the background in engineering, the applied machine learning I
 worked through during my M.Sc. and Ph.D. where i **applied different ML mothods to analyze medical (clinical/preclinical) data**, and the deep learning I applied in my most
 recent publication (*Imaging Neuroscience*, under review), where I **fine-tuned** a
 pre-trained DeepLabCut model (ResNet50) for markerless tracking by defining and comparing
@@ -29,12 +23,11 @@ in front of me. Putting them together, around a problem I had actually lived, di
 
 I am not claiming nobody has ever automated parts of an imaging pipeline. What is mine is the
 origin and the approach: this grew out of a problem I faced firsthand at the
-scanner, and I designed and implemented it in my own way, with my own judgement and experience in working with live animal subjects about where a human must stay in the loop. The design decisions throughout are
-mine; I directed and reasoned through the whole architecture.
+lab, and I designed and implemented it in my own way, with my own experience in working with live animal subjects and  my own judgement about where a human must stay in the loop. The design decisions throughout are mine; I directed and reasoned through the whole architecture.
 
 ## The governing principle
 
-Log-and-convert every run first; judge quality after. Scanner time was already
+Log and convert every run first; judge quality after. Scanner time was already
 spent, so every functional run gets logged to the sheet and converted to NIfTI no
 matter how it looks. Only the quality judgement is conditional. This means a bad
 run is still recorded and still on disk in a standard form and I never silently
