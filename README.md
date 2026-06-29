@@ -160,7 +160,7 @@ sheet and nothing real involved:
 bash fixtures/synthetic/run_demo.sh        # runs the full pipeline in auto mode
 ```
 
-## Honest limitations
+## Limitations
 
 I would rather state these plainly than let them surprise anyone.
 
