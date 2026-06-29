@@ -4,7 +4,7 @@
    Vander Tuin C, Everling S (2023). *In vivo functional brain mapping using
    ultra-high-field fMRI in awake common marmosets.* STAR Protocols 4(4):102586.
 
-   Version 1 of this agent handles detection, conversion, naming, logging, and quality triage, 
+   Version 1 of this agent handles detection, conversion, naming, logging, and quality control, 
    the stage that feeds that pipeline. Future versions will implement the
    preprocessing and analysis steps described in the protocol directly.
 
