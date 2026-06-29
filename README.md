@@ -12,7 +12,7 @@
 
 MarmoMind is a **human-in-the-loop** processing agent for awake, head-fixed marmoset
 fMRI. I built it to sit in the preparation room and do the work I cannot do alone in
-real time while scanning marmosets: log every run, convert the raw data (DICOM) to Nifti, and reason about whether the data is worth analyzing, while I keep my attention on the animal and experiment in the lab!
+real time while scanning marmosets: log every run, convert the raw data (DICOM) to Nifti, and reason about whether the data is worth analyzing (it is correct and clean considering the task and experimental conditions), while I keep my attention on the animal and experiment in the lab!
 It recommends and sorts. I decide whenever is needed. It never pools data into a final analysis on its own, and it never claims to read or interpret a brain image. It reasons only over the text of my (experimenter) notes and the numeric outputs of its tools.
 
 ## The Idea of building MarmoMind comes from:
