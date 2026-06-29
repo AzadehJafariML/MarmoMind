@@ -1,4 +1,4 @@
-**MarmoMind** is an **agentic AI** that automates the data-handling and quality-triage stage that precedes the awake-marmoset fMRI preprocessing pipeline used in our research group, published as:
+**MarmoMind** is an **agentic AI** that automates the data-handling and quality control stage (pre-preprocessing) that precedes the awake marmoset fMRI preprocessing pipeline used in our research group, published as:
 
    Zanini A, Dureux A, **Jafari A**, Gilbert KM, Zeman P, Bellyou M, Li A,
    Vander Tuin C, Everling S (2023). *In vivo functional brain mapping using
