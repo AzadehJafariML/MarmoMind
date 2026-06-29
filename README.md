@@ -47,7 +47,7 @@ lose a run, I only sort it.
 2. Parse the raw DICOM filenames and infer run order. It collects the series
    numbers, sorts them, and assigns the smallest to the phase-reverse (`ap`) and
    the rest to `r1, r2, r3...`. The order is inferred every time, never hardcoded,
-   because the absolute series numbers change between sessions. This was the standard format I used for naming the raw data.
+   because the absolute series numbers change between sessions and subjects. This was the standard format I used for labeling the raw data.
 3. Identify the monkey and look it up in the lab sheet to get its ID and its
    per-monkey tab. (in the next versions, MarmoMind will be able to be directly connected the GoogleSheet where we typically saved the information of the subjects)
 4. Work out the next session number by reading the last one already in the sheet.
