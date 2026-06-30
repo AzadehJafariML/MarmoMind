@@ -30,7 +30,7 @@ binaries:
 # ---- Detection / readiness ----
 detection:
   poll_interval_seconds: 10        # how often to scan the two folders
-  quiescence_seconds:    30        # ready only after file count is stable this long
+  quiescence_seconds:    180        # ready only after file count is stable this long
                                    # AND series present in DICOM + regressors arrived
 
 # ---- Sheet backend (v1 = local xlsx; switch to live Google Sheet later) ----
