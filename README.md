@@ -21,11 +21,10 @@ The idea is mine, and it came from a problem I kept running into myself during m
 
 Although the idea of MarmoMind initiated in early years of my Ph.D., I objectified MarmoMind in May 2026, just after finishing my Ph.D. in April 2026. It pulls together skills I had built up separately over the years (my B.Sc. in electronics engineering [4.5 year], my M.Sc. in medical data engineering (biomedical Eng) [3 years], and my Ph.D. in computational neuroscience [4.5 years]) and had never combined in one place: the background in engineering, the applied machine learning I
 worked through during my M.Sc. and Ph.D. where I applied **different ML mothods** to analyze multimodal clinical/preclinical data, and the **deep learning** I applied in my most
-recent publication (*Imaging Neuroscience*, under review), where I **fine-tuned** a
+recent publications (*Imaging Neuroscience*, under review), where I **fine-tuned** a
 pre-trained DeepLabCut model (ResNet50) for pose estimation and facial landmark detection in over 100 in-scanner-recorded videos for an auditory task by **defining and comparing
 multiple landmark configurations** and selecting the one that gave the most robust
-tracking for my subsequent analysis. None of those on their own solved the problem
-in front of me. Putting them together, around a problem I had actually lived, did.
+tracking for my subsequent analysis, and (*Journal of Neuroscience, published in 2025*) where I **developed a 3D CNN from scratch** to decode brain activation patterns and find which conditions produced those patterns. The difference was subtle, but what I designed did the job well! However, none of those on their own solved the problem in front of me. Putting these skills together, around a problem I had actually lived, did.
 
 I am not claiming nobody has ever automated parts of an data analysis pipeline. What is mine is the
 origin and the approach: this grew out of a problem I faced firsthand at the
