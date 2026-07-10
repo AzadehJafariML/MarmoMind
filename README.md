@@ -1,12 +1,12 @@
-**MarmoMind** is an **agentic AI** that automates the data-handling and quality control stage (pre-preprocessing) that precedes the awake marmoset fMRI preprocessing pipeline used in our research group, published as:
+**MarmoMind** is an **AI agent** that automates the data handling and quality control stage (pre-preprocessing) that precedes the awake marmoset fMRI preprocessing pipeline used in our research group, published as:
 
    Zanini A, Dureux A, **Jafari A**, Gilbert KM, Zeman P, Bellyou M, Li A,
    Vander Tuin C, Everling S (2023). *In vivo functional brain mapping using
    ultra-high-field fMRI in awake common marmosets.* STAR Protocols 4(4):102586.
 
    Version 1 of this agent handles detection, conversion, naming, logging, and quality control, 
-   the stage that feeds that pipeline. Future versions will implement the
-   preprocessing and analysis steps described in the protocol directly.
+   the stage that feeds processing pipeline. Future versions will implement the
+   preprocessing and fMRI analysis steps described in the protocol directly. Please attention no real data is published here as the whole data and processing steps belong to Everling lab.
 
 # MarmoMind
 
