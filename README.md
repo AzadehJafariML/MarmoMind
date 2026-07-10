@@ -6,7 +6,7 @@
 
    Version 1 of this agent handles detection, conversion, naming, logging, and quality control, 
    the stage that feeds processing pipeline. Future versions will implement the
-   preprocessing and fMRI analysis steps described in the protocol directly. Please attention no real data is published here as the whole data and processing steps belong to Everling lab.
+   preprocessing and fMRI analysis steps described in the protocol directly. Please attention no real data is published here.
 
 # MarmoMind
 
