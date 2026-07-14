@@ -200,6 +200,6 @@ a fully synthetic demo. The logic is tested.
 
 ## A note on data and distribution
 
-Although MarmoMind was developed, built and tested on real data, no real animal data, no real lab sheet, and no credentials live in this repository for ethical rules. The public demo is entirely synthetic. The real data stays on my own disk, outside anything that would be committed. I will not publish this repository to GitHub or any remote until I have permission from my Ph.D. supervisor at University of Western Ontario (Dr. Everling, CFMM).
+Although MarmoMind was developed, built and tested on real data, no real animal data, no real lab sheet, and no credentials live in this repository for ethical rules. The public demo is entirely synthetic.
 
 
